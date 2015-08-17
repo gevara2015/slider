@@ -11,33 +11,54 @@
 
         }, options);
 
-        function mySlider(){
-
+        function addedDragWrapper() {
+            $('.slider > *').wrapAll('<div class="slider-draggable"></div>').addClass("slide-item");
         }
 
-        return this.each(function () {
+        addedDragWrapper();
 
-            $('.slider > *').wrapAll('<div class="slider-draggable"></div>').addClass("slide-item");
+        var itemSlide = $('.slide-item'),
+            sliderOuter = $('.slider-draggable');
 
-            var itemSlide = $('.slide-item'),
-                sliderOuter = $('.slider-draggable'),
-                wSlider = sliderOuter.width(),
+        function initPlugin() {
+            initialItems();
+            addedWrapper();
+            createNav();
+            addedStyles();
+            bindEvent();
+            /**
+             *next slide
+             * */
+        }
+
+        function bindEvent() {
+            $('.slider .next').click(fNextSlide);
+            $('.slider .prev').click(fPrevSlide);
+        }
+
+        function initialItems() {
+            wSlider = sliderOuter.width(),
                 nSlides = itemSlide.length,
                 wItem = Math.ceil(wSlider / settings.slideToShow),
                 firstSlide = itemSlide.first().index(),
                 lastSlide = itemSlide.last().index(),
                 currentSlide = firstSlide,
-                nSlide = firstSlide + 1,
+                nSlide = (firstSlide + 1),
                 pSlide = lastSlide;
+        }
 
-            //added wrapper
+        /**
+         * added wrapper
+         * */
+        function addedWrapper() {
             sliderOuter.wrap('<div class="wrap"></div>').width(wItem * nSlides);
-
             $('.wrap').append(settings.prevSlide + settings.nextSlide + "<ul class='slider-nav'></ul>");
+        }
 
-
-            //add nav
-
+        /**
+         *add nav
+         * */
+        function createNav() {
             if (settings.nav === true) {
 
                 var list = $(".slider-nav"),
@@ -49,8 +70,12 @@
                 }
 
             }
+        }
 
-            //added styles to slider elements
+        /*
+         * added styles to slider elements
+         * **/
+        function addedStyles() {
             itemSlide.css({
                 'width': wItem
             });
@@ -59,25 +84,29 @@
                 'position': 'relative',
                 'overflow': 'hidden'
             });
+        }
 
-            $('.slider .next').click(function () {
-                nSlide = currentSlide == lastSlide ? firstSlide : currentSlide + 1;
-                sliderOuter.css({
-                    'transform': 'translate3d(-' + nSlide * wItem + 'px, 0, 0)'
-                });
-
-                currentSlide = nSlide;
+        function fNextSlide() {
+            nSlide = currentSlide == lastSlide ? firstSlide : currentSlide + 1;
+            sliderOuter.css({
+                'transform': 'translate3d(-' + nSlide * wItem + 'px, 0, 0)'
             });
 
-            $('.slider .prev').click(function () {
-                pSlide = currentSlide == firstSlide ? lastSlide : currentSlide - 1;
-                sliderOuter.css({
-                    'transform': 'translate3d(-' + pSlide * wItem + 'px, 0, 0)'
-                });
-                currentSlide = pSlide;
-            });
+            currentSlide = nSlide;
+        }
 
-        });
+        /**
+         *prev slide
+         * */
+        function fPrevSlide() {
+            pSlide = currentSlide == firstSlide ? lastSlide : currentSlide - 1;
+            sliderOuter.css({
+                'transform': 'translate3d(-' + pSlide * wItem + 'px, 0, 0)'
+            });
+            currentSlide = pSlide;
+        }
+
+        return initPlugin();
 
     };
 
