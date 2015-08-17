@@ -1,3 +1,16 @@
+@mixin transition($transition...) {
+    -webkit-transition : $transition;
+    -moz-transition    : $transition;
+    transition         : $transition;
+}
+
+@mixin animation($animation) {
+    -webkit-animation : $animation;
+    -moz-animation    : $animation;
+    -ms-animation     : $animation;
+    animation         : $animation;
+}
+
 * {
     padding    : 0;
     margin     : 0;
@@ -20,6 +33,7 @@ figure {
 .slide-item {
     float   : left;
     padding : 0 0.5%;
+    @include transition(all 0.2s linear);
 }
 
 .wrap {
@@ -63,4 +77,27 @@ button {
         }
     }
 }
+
+.slide-pulse {
+    @include animation(pulse 0.4s linear forwards);
+}
+
+@-webkit-keyframes pulse {
+    0% { opacity : 1; }
+    50% { opacity : 0.5; }
+    100% { opacity : 1 }
+}
+
+@-moz-keyframes pulse {
+    0% { opacity : 1; }
+    50% { opacity : 0.5; }
+    100% { opacity : 1 }
+}
+
+@keyframes pulse {
+    0% { opacity : 1; }
+    50% { opacity : 0.5; }
+    100% { opacity : 1 }
+}
+
 

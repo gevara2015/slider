@@ -10,6 +10,7 @@
             'nextSlide'  : "<button class='next'>next slide</button>"
 
         }, options);
+        var counter = 0;
 
         function addedDragWrapper() {
             $('.slider > *').wrapAll('<div class="slider-draggable"></div>').addClass("slide-item");
@@ -26,14 +27,16 @@
             createNav();
             addedStyles();
             bindEvent();
-            /**
-             *next slide
-             * */
         }
 
         function bindEvent() {
-            $('.slider .next').click(fNextSlide);
-            $('.slider .prev').click(fPrevSlide);
+            $('.slider .next').click(function () {
+                shiftingSlides('next')
+            });
+
+            $('.slider .prev').click(function () {
+                shiftingSlides('prev');
+            });
         }
 
         function initialItems() {
@@ -61,12 +64,14 @@
         function createNav() {
             if (settings.nav === true) {
 
-                var list = $(".slider-nav"),
-                    items = list.children().index();
+                var list = $(".slider-nav");
+                //items = list.children().index();
 
                 for (items = 0; items < nSlides; items++) {
-                    list.append("<li><button data-target='slide'>" + items + "</button></li>").find('li').first().addClass('slide-active');
-                    $(".slider-nav button").data('target');
+                    list.append("<li><button>" + items + "</button></li>").find('li').first().addClass('slide-active');
+                    $(".slider-nav button").addClass('foo' + items);
+
+                    console.log();
                 }
 
             }
@@ -86,6 +91,61 @@
             });
         }
 
+        function shiftingSlides(direction) {
+
+            var controlObject;
+            var lengthSlides = itemSlide.length,
+                widthSlider = sliderOuter.width(),
+                wItemSlide = Math.ceil(widthSlider / lengthSlides),
+                lastSlide = (itemSlide.last().index() - 1);
+
+            function fLastSlide() {
+                if (counter == lastSlide) {
+                    itemSlide.eq(lengthSlides - 1).addClass("slide-pulse");
+                }
+            }
+
+            function fFirstSlide() {
+                if (counter == lastSlide) {
+                    itemSlide.eq(lengthSlides - 1).addClass("slide-pulse");
+                }
+            }
+
+            function deleteClassLast() {
+                itemSlide.removeClass("slide-pulse");
+            }
+
+            controlObject = {
+                "next": function () {
+                    if (counter < lastSlide) {
+                        counter++;
+                        deleteClassLast();
+                        sliderOuter.css({
+                            'transform': 'translate3d(-' + counter * wItemSlide + 'px, 0, 0)'
+                        });
+                    } else {
+                        fLastSlide();
+                    }
+                },
+                "prev": function () {
+                    counter--;
+                    sliderOuter.css({
+                        'transform': 'translate3d(-' + counter * wItemSlide + 'px, 0, 0)'
+                    });
+                }
+            };
+
+            if (controlObject.hasOwnProperty(direction)) {
+                controlObject[direction]();
+            } else {
+                throw new Error('incorrect input params in shiftingSlides params')
+            }
+
+        }
+
+        /**
+         *next slide
+         * */
         function fNextSlide() {
             nSlide = currentSlide == lastSlide ? firstSlide : currentSlide + 1;
             sliderOuter.css({

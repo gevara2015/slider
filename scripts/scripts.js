@@ -1,5 +1,5 @@
 $('.slider').mySlider({
-    slideToShow: 3
+    slideToShow: 2
     //nav: false
 
 });

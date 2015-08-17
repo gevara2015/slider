@@ -16,7 +16,10 @@ figure img {
 
 .slide-item {
   float: left;
-  padding: 0 0.5%; }
+  padding: 0 0.5%;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  transition: all 0.2s linear; }
 
 .wrap {
   width: 100%;
@@ -53,5 +56,33 @@ button {
       padding: 10px;
       margin: 0 5px;
       border-radius: 100%; }
+
+.slide-pulse {
+  -webkit-animation: pulse 0.4s linear forwards;
+  -moz-animation: pulse 0.4s linear forwards;
+  -ms-animation: pulse 0.4s linear forwards;
+  animation: pulse 0.4s linear forwards; }
+
+@-webkit-keyframes pulse {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+@-moz-keyframes pulse {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+@keyframes pulse {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
 
 /*# sourceMappingURL=style.css.map */
